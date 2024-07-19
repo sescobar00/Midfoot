@@ -2,7 +2,6 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 
 #include QMK_KEYBOARD_H
-#include "analog.h"
 
 extern MidiDevice midi_device;
 
@@ -20,10 +19,6 @@ enum custom_keycodes {
 	MIDI_CC83,
 	MIDI_CC84
 };
-
-int ADCValue = 0;
-float Normalized = 0;
-float NormalizedPrevious = 0;
 
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	
@@ -66,12 +61,6 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 	}
     return true;
 };
-
-void matrix_scan_user(void) {
-	ADCValue = analogReadPin(F4);
-	Normalized = ((ADCValue / 1023.00) * 127);
-	midi_send_cc(&midi_device, midi_config.channel, 85, floor(Normalized));
-}
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /*
